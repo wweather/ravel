@@ -17,6 +17,8 @@ namespace Ravel
 	class Program
 	{
 		const string Version = "0.1";
+		const string PassageFileExt = "twp";
+
 		static StreamWriter Log;
 
 		static void Main(string[] args)
@@ -147,7 +149,7 @@ namespace Ravel
 				string name = el.Attribute("name").Value;
 				try
 				{
-					string pathString = Path.GetFullPath(Path.Combine(dirInfo.FullName, Path.ChangeExtension(name.Replace('/', Path.DirectorySeparatorChar), "tws")));
+					string pathString = Path.GetFullPath(Path.Combine(dirInfo.FullName, Path.ChangeExtension(name.Replace('/', Path.DirectorySeparatorChar), PassageFileExt)));
 					if (pathString.Substring(0, dirInfo.FullName.Length) != dirInfo.FullName)
 					{
 						Console.WriteLine("Error: Passage name {0} resolves to a path outside the story workspace.", name);
@@ -235,7 +237,7 @@ namespace Ravel
 				infoStream.Close();
 			}
 
-			if(!File.Exists(Path.Combine(story, Path.ChangeExtension(storyInfo.startnode.Replace('/', Path.DirectorySeparatorChar), "tws"))))
+			if(!File.Exists(Path.Combine(story, Path.ChangeExtension(storyInfo.startnode.Replace('/', Path.DirectorySeparatorChar), PassageFileExt))))
 			{
 				Console.WriteLine("publish: Story startnode {0} doesn't exist.", storyInfo.startnode);
 				return;
@@ -284,7 +286,7 @@ namespace Ravel
 				);
 
 			int pid = 0;
-			List<string> passages = Directory.EnumerateFiles(story, "*.tws", SearchOption.AllDirectories).ToList();
+			List<string> passages = Directory.EnumerateFiles(story, "*." + PassageFileExt, SearchOption.AllDirectories).ToList();
 			int sizeX = (int)Math.Ceiling(Math.Sqrt(passages.Count()));
 			foreach (string file in passages)
 			{
